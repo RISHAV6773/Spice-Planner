@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpicePlanner - Indian Meal Planning App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Auth Modal -->
+        <div id="auth-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div id="auth-forms">
+                    <div id="login-form" class="auth-form active">
+                        <h2>Login</h2>
+                        <form id="login">
+                            <div class="social-login">
+                                <button type="button" class="google-btn"><i class="fab fa-google"></i> Login with Google</button>
+                                <button type="button" class="facebook-btn"><i class="fab fa-facebook-f"></i> Login with Facebook</button>
+                            </div>
+                            <div class="divider">or</div>
+                            <div class="form-group">
+                                <label for="login-email">Email</label>
+                                <input type="email" id="login-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input type="password" id="login-password" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Login</button>
+                            <p class="auth-switch">Don't have an account? <a href="#" id="show-signup">Sign up</a></p>
+                        </form>
+                    </div>
+                    <div id="signup-form" class="auth-form">
+                        <h2>Sign Up</h2>
+                        <form id="signup">
+                            <div class="form-group">
+                                <label for="signup-name">Full Name</label>
+                                <input type="text" id="signup-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-email">Email</label>
+                                <input type="email" id="signup-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-password">Password</label>
+                                <input type="password" id="signup-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-confirm-password">Confirm Password</label>
+                                <input type="password" id="signup-confirm-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Dietary Preference</label>
+                                <select id="dietary-preference">
+                                    <option value="vegetarian">Vegetarian</option>
+                                    <option value="non-vegetarian">Non-Vegetarian</option>
+                                    <option value="vegan">Vegan</option>
+                                    <option value="jain">Jain</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Allergens (Select all that apply)</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" name="allergens" value="nuts"> Nuts</label>
+                                    <label><input type="checkbox" name="allergens" value="gluten"> Gluten</label>
+                                    <label><input type="checkbox" name="allergens" value="dairy"> Dairy</label>
+                                    <label><input type="checkbox" name="allergens" value="soy"> Soy</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary">Sign Up</button>
+                            <p class="auth-switch">Already have an account? <a href="#" id="show-login">Login</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1 class="logo">SpicePlanner</h1>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#" class="nav-link active" data-section="dashboard">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-section="meal-plan">Meal Plan</a></li>
+                        <li><a href="#" class="nav-link" data-section="recipes">Recipes</a></li>
+                        <li><a href="#" class="nav-link" data-section="shopping-list">Shopping List</a></li>
+                        <li><a href="#" class="nav-link" data-section="community">Community</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Search recipes..." id="global-search">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-actions">
+                    <button id="auth-btn" class="btn-outline">Login</button>
+                    <div id="user-profile" class="hidden">
+                        <img src="assets/images/default-avatar.jpg" alt="User" class="user-avatar">
+                        <span class="user-name">User</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="dashboard-container">
+                    <div class="welcome-banner">
+                        <h2>Welcome to SpicePlanner!</h2>
+                        <p>Plan your meals, discover new recipes, and simplify your cooking routine.</p>
+                        <button class="btn-primary" id="quick-plan-btn">Create Quick Meal Plan</button>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card quick-actions">
+                            <h3>Quick Actions</h3>
+                            <div class="action-buttons">
+                                <button class="btn-outline" id="add-recipe-btn"><i class="fas fa-plus"></i> Add Recipe</button>
+                                <button class="btn-outline" id="view-shopping-btn"><i class="fas fa-shopping-cart"></i> View Shopping List</button>
+                                <button class="btn-outline" id="browse-recipes-btn"><i class="fas fa-book-open"></i> Browse Recipes</button>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card recent-recipes">
+                            <h3>Recently Viewed Recipes</h3>
+                            <div class="recipe-carousel" id="recent-recipes-carousel">
+                                <!-- Dynamically loaded -->
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card meal-plan-preview">
+                            <div class="card-header">
+                                <h3>This Week's Meal Plan</h3>
+                                <a href="#" class="view-all" data-section="meal-plan">View All</a>
+                            </div>
+                            <div class="mini-calendar">
+                                <!-- Dynamically loaded -->
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card nutrition-overview">
+                            <h3>Nutrition Overview</h3>
+                            <div class="nutrition-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">2,100</div>
+                                    <div class="stat-label">Avg. Calories/day</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">65g</div>
+                                    <div class="stat-label">Protein/day</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">45%</div>
+                                    <div class="stat-label">Carbs</div>
+                                </div>
+                            </div>
+                            <div class="nutrition-chart">
+                                <!-- Chart would be rendered here -->
+                                <canvas id="nutrition-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Meal Plan Section -->
+            <section id="meal-plan-section" class="content-section">
+                <div class="section-header">
+                    <h2>Meal Planner</h2>
+                    <div class="section-actions">
+                        <button class="btn-outline" id="new-meal-plan-btn"><i class="fas fa-plus"></i> New Plan</button>
+                        <div class="view-options">
+                            <button class="view-option active" data-view="week">Week</button>
+                            <button class="view-option" data-view="month">Month</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="meal-plan-container">
+                    <div class="meal-plan-sidebar">
+                        <div class="sidebar-section recipe-filters">
+                            <h4>Recipe Filters</h4>
+                            <div class="filter-group">
+                                <label>Cuisine</label>
+                                <select id="cuisine-filter" multiple>
+                                    <option value="north-indian">North Indian</option>
+                                    <option value="south-indian">South Indian</option>
+                                    <option value="mumbai-street">Mumbai Street Food</option>
+                                    <option value="punjabi">Punjabi</option>
+                                    <option value="gujarati">Gujarati</option>
+                                    <option value="bengali">Bengali</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Cooking Time</label>
+                                <select id="time-filter">
+                                    <option value="any">Any</option>
+                                    <option value="30">Under 30 mins</option>
+                                    <option value="60">Under 1 hour</option>
+                                    <option value="90">Under 1.5 hours</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Dietary</label>
+                                <select id="diet-filter">
+                                    <option value="any">Any</option>
+                                    <option value="vegetarian">Vegetarian</option>
+                                    <option value="non-vegetarian">Non-Vegetarian</option>
+                                    <option value="vegan">Vegan</option>
+                                    <option value="jain">Jain</option>
+                                </select>
+                            </div>
+                            <button class="btn-primary" id="apply-filters-btn">Apply Filters</button>
+                        </div>
+                        
+                        <div class="sidebar-section filtered-recipes">
+                            <h4>Filtered Recipes</h4>
+                            <div class="recipe-list" id="filtered-recipes-list">
+                                <!-- Dynamically loaded -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="meal-plan-calendar">
+                        <div class="calendar-header">
+                            <button class="nav-arrow" id="prev-week"><i class="fas fa-chevron-left"></i></button>
+                            <h3 id="current-week-range">June 12 - June 18, 2023</h3>
+                            <button class="nav-arrow" id="next-week"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        
+                        <div class="week-view">
+                            <div class="week-header">
+                                <div class="day-header">Sunday</div>
+                                <div class="day-header">Monday</div>
+                                <div class="day-header">Tuesday</div>
+                                <div class="day-header">Wednesday</div>
+                                <div class="day-header">Thursday</div>
+                                <div class="day-header">Friday</div>
+                                <div class="day-header">Saturday</div>
+                            </div>
+                            
+                            <div class="week-grid">
+                                <div class="day-column" data-day="0">
+                                    <div class="meal-slot" data-meal="breakfast">
+                                        <div class="meal-header">Breakfast</div>
+                                        <div class="meal-content droppable"></div>
+                                    </div>
+                                    <div class="meal-slot" data-meal="lunch">
+                                        <div class="meal-header">Lunch</div>
+                                        <div class="meal-content droppable"></div>
+                                    </div>
+                                    <div class="meal-slot" data-meal="dinner">
+                                        <div class="meal-header">Dinner</div>
+                                        <div class="meal-content droppable"></div>
+                                    </div>
+                                </div>
+                                <!-- Repeat for other 6 days -->
+                                <div class="day-column" data-day="1">
+                                    <!-- Same structure as above -->
+                                </div>
+                                <div class="day-column" data-day="2">
+                                    <!-- Same structure as above -->
+                                </div>
+                                <div class="day-column" data-day="3">
+                                    <!-- Same structure as above -->
+                                </div>
+                                <div class="day-column" data-day="4">
+                                    <!-- Same structure as above -->
+                                </div>
+                                <div class="day-column" data-day="5">
+                                    <!-- Same structure as above -->
+                                </div>
+                                <div class="day-column" data-day="6">
+                                    <!-- Same structure as above -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recipes Section -->
+            <section id="recipes-section" class="content-section">
+                <div class="section-header">
+                    <h2>Recipe Database</h2>
+                    <div class="section-actions">
+                        <button class="btn-primary" id="add-new-recipe-btn"><i class="fas fa-plus"></i> Add Recipe</button>
+                        <div class="search-box">
+                            <input type="text" placeholder="Search recipes..." id="recipe-search">
+                            <button id="recipe-search-btn"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recipe-filters-bar">
+                    <div class="filter-tags">
+                        <span class="filter-tag active">All</span>
+                        <span class="filter-tag">North Indian</span>
+                        <span class="filter-tag">South Indian</span>
+                        <span class="filter-tag">Vegetarian</span>
+                        <span class="filter-tag">Quick Meals</span>
+                    </div>
+                </div>
+                
+                <div class="recipes-container">
+                    <div class="recipe-categories">
+                        <h4>Categories</h4>
+                        <ul class="category-list">
+                            <li class="active">All Recipes</li>
+                            <li>Breakfast</li>
+                            <li>Lunch</li>
+                            <li>Dinner</li>
+                            <li>Snacks</li>
+                            <li>Desserts</li>
+                            <li>Drinks</li>
+                        </ul>
+                        
+                        <h4>Dietary</h4>
+                        <ul class="dietary-list">
+                            <li>Vegetarian</li>
+                            <li>Non-Vegetarian</li>
+                            <li>Vegan</li>
+                            <li>Jain</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recipe-grid" id="recipe-grid">
+                        <!-- Recipe cards will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shopping List Section -->
+            <section id="shopping-list-section" class="content-section">
+                <div class="section-header">
+                    <h2>Shopping List</h2>
+                    <div class="section-actions">
+                        <button class="btn-outline" id="print-shopping-list"><i class="fas fa-print"></i> Print</button>
+                        <button class="btn-outline" id="share-shopping-list"><i class="fas fa-share-alt"></i> Share</button>
+                        <button class="btn-primary" id="generate-from-meal-plan"><i class="fas fa-sync-alt"></i> Generate from Meal Plan</button>
+                    </div>
+                </div>
+                
+                <div class="shopping-list-container">
+                    <div class="shopping-list-categories">
+                        <div class="category-section" data-category="vegetables">
+                            <h4>Vegetables</h4>
+                            <ul class="shopping-items">
+                                <!-- Items will be loaded here -->
+                            </ul>
+                        </div>
+                        <div class="category-section" data-category="fruits">
+                            <h4>Fruits</h4>
+                            <ul class="shopping-items">
+                                <!-- Items will be loaded here -->
+                            </ul>
+                        </div>
+                        <div class="category-section" data-category="spices">
+                            <h4>Spices & Herbs</h4>
+                            <ul class="shopping-items">
+                                <!-- Items will be loaded here -->
+                            </ul>
+                        </div>
+                        <div class="category-section" data-category="grains">
+                            <h4>Grains & Pulses</h4>
+                            <ul class="shopping-items">
+                                <!-- Items will be loaded here -->
+                            </ul>
+                        </div>
+                        <div class="category-section" data-category="dairy">
+                            <h4>Dairy</h4>
+                            <ul class="shopping-items">
+                                <!-- Items will be loaded here -->
+                            </ul>
+                        </div>
+                        <div class="category-section" data-category="other">
+                            <h4>Other</h4>
+                            <ul class="shopping-items">
+                                <!-- Items will be loaded here -->
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="shopping-list-actions">
+                        <div class="add-item-form">
+                            <h4>Add Custom Item</h4>
+                            <div class="form-group">
+                                <input type="text" id="new-item-name" placeholder="Item name">
+                            </div>
+                            <div class="form-group">
+                                <select id="new-item-category">
+                                    <option value="vegetables">Vegetables</option>
+                                    <option value="fruits">Fruits</option>
+                                    <option value="spices">Spices & Herbs</option>
+                                    <option value="grains">Grains & Pulses</option>
+                                    <option value="dairy">Dairy</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="new-item-quantity" placeholder="Quantity (optional)">
+                            </div>
+                            <button class="btn-primary" id="add-custom-item">Add Item</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Community Section -->
+            <section id="community-section" class="content-section">
+                <div class="section-header">
+                    <h2>Community</h2>
+                    <div class="section-actions">
+                        <button class="btn-primary" id="submit-recipe-btn"><i class="fas fa-upload"></i> Submit Your Recipe</button>
+                    </div>
+                </div>
+                
+                <div class="community-container">
+                    <div class="community-featured">
+                        <h3>Featured Recipes</h3>
+                        <div class="featured-recipes">
+                            <!-- Featured recipes carousel -->
+                        </div>
+                    </div>
+                    
+                    <div class="community-recent">
+                        <h3>Recently Shared</h3>
+                        <div class="recent-recipes-grid">
+                            <!-- Recently shared recipes -->
+                        </div>
+                    </div>
+                    
+                    <div class="community-discussions">
+                        <h3>Discussions</h3>
+                        <div class="discussion-threads">
+                            <!-- Discussion threads -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Recipe Detail Modal -->
+        <div id="recipe-modal" class="modal">
+            <div class="modal-content recipe-modal-content">
+                <span class="close-btn">&times;</span>
+                <div class="recipe-modal-header">
+                    <div class="recipe-image">
+                        <img src="assets/images/placeholder-recipe.jpg" alt="Recipe" id="modal-recipe-image">
+                    </div>
+                    <div class="recipe-header-info">
+                        <h2 id="modal-recipe-title">Recipe Title</h2>
+                        <div class="recipe-meta">
+                            <span class="cuisine-badge" id="modal-recipe-cuisine">North Indian</span>
+                            <span class="dietary-badge" id="modal-recipe-dietary">Vegetarian</span>
+                            <span class="time-badge" id="modal-recipe-time"><i class="far fa-clock"></i> 45 mins</span>
+                            <span class="difficulty-badge" id="modal-recipe-difficulty">Medium</span>
+                        </div>
+                        <div class="recipe-actions">
+                            <button class="btn-outline" id="add-to-meal-plan-btn"><i class="far fa-calendar-plus"></i> Add to Meal Plan</button>
+                            <button class="btn-outline" id="save-recipe-btn"><i class="far fa-bookmark"></i> Save</button>
+                            <button class="btn-outline" id="share-recipe-btn"><i class="fas fa-share-alt"></i> Share</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recipe-modal-body">
+                    <div class="recipe-tabs">
+                        <button class="recipe-tab active" data-tab="ingredients">Ingredients</button>
+                        <button class="recipe-tab" data-tab="instructions">Instructions</button>
+                        <button class="recipe-tab" data-tab="nutrition">Nutrition</button>
+                        <button class="recipe-tab" data-tab="reviews">Reviews</button>
+                    </div>
+                    
+                    <div class="recipe-tab-content active" data-tab="ingredients">
+                        <h3>Ingredients</h3>
+                        <div class="servings-control">
+                            <label>Servings:</label>
+                            <div class="servings-selector">
+                                <button class="servings-btn" id="decrease-servings">-</button>
+                                <span id="servings-count">4</span>
+                                <button class="servings-btn" id="increase-servings">+</button>
+                            </div>
+                        </div>
+                        <ul class="ingredients-list" id="modal-ingredients-list">
+                            <!-- Ingredients will be loaded here -->
+                        </ul>
+                        <div class="substitution-section">
+                            <h4>Ingredient Substitutions</h4>
+                            <div class="substitution-list" id="substitution-list">
+                                <!-- Substitutions will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recipe-tab-content" data-tab="instructions">
+                        <h3>Instructions</h3>
+                        <ol class="instructions-list" id="modal-instructions-list">
+                            <!-- Instructions will be loaded here -->
+                        </ol>
+                        <div class="recipe-notes">
+                            <h4>Notes & Tips</h4>
+                            <p id="modal-recipe-notes">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="recipe-tab-content" data-tab="nutrition">
+                        <h3>Nutritional Information</h3>
+                        <div class="nutrition-facts">
+                            <div class="nutrition-main">
+                                <div class="nutrition-item">
+                                    <span class="nutrition-value" id="calories">350</span>
+                                    <span class="nutrition-label">Calories</span>
+                                </div>
+                                <div class="nutrition-item">
+                                    <span class="nutrition-value" id="protein">12g</span>
+                                    <span class="nutrition-label">Protein</span>
+                                </div>
+                                <div class="nutrition-item">
+                                    <span class="nutrition-value" id="carbs">45g</span>
+                                    <span class="nutrition-label">Carbs</span>
+                                </div>
+                                <div class="nutrition-item">
+                                    <span class="nutrition-value" id="fat">15g</span>
+                                    <span class="nutrition-label">Fat</span>
+                                </div>
+                            </div>
+                            <div class="nutrition-details">
+                                <table>
+                                    <tr>
+                                        <td>Saturated Fat</td>
+                                        <td id="saturated-fat">5g</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fiber</td>
+                                        <td id="fiber">6g</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sugar</td>
+                                        <td id="sugar">10g</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sodium</td>
+                                        <td id="sodium">800mg</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recipe-tab-content" data-tab="reviews">
+                        <h3>Reviews</h3>
+                        <div class="review-form">
+                            <div class="rating-input">
+                                <span>Your Rating:</span>
+                                <div class="star-rating">
+                                    <i class="far fa-star" data-rating="1"></i>
+                                    <i class="far fa-star" data-rating="2"></i>
+                                    <i class="far fa-star" data-rating="3"></i>
+                                    <i class="far fa-star" data-rating="4"></i>
+                                    <i class="far fa-star" data-rating="5"></i>
+                                </div>
+                            </div>
+                            <textarea placeholder="Write your review..." id="review-text"></textarea>
+                            <button class="btn-primary" id="submit-review-btn">Submit Review</button>
+                        </div>
+                        <div class="reviews-list" id="reviews-list">
+                            <!-- Reviews will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cooking Assistant Modal -->
+        <div id="cooking-modal" class="modal">
+            <div class="modal-content cooking-modal-content">
+                <span class="close-btn">&times;</span>
+                <div class="cooking-header">
+                    <h2 id="cooking-recipe-title">Cooking: Paneer Butter Masala</h2>
+                    <div class="cooking-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 25%;"></div>
+                        </div>
+                        <span class="progress-text">Step 2 of 8</span>
+                    </div>
+                </div>
+                
+                <div class="cooking-body">
+                    <div class="current-step">
+                        <h3 id="current-step-title">Step 2: Sauté the onions</h3>
+                        <div class="step-image">
+                            <img src="assets/images/cooking-step.jpg" alt="Cooking step">
+                        </div>
+                        <p id="current-step-description">Heat oil in a pan and add finely chopped onions. Sauté until golden brown, about 5-7 minutes.</p>
+                        <div class="step-timer" id="step-timer">
+                            <div class="timer-display">05:00</div>
+                            <div class="timer-controls">
+                                <button class="timer-btn" id="start-timer"><i class="fas fa-play"></i></button>
+                                <button class="timer-btn" id="pause-timer"><i class="fas fa-pause"></i></button>
+                                <button class="timer-btn" id="reset-timer"><i class="fas fa-redo"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-navigation">
+                        <button class="btn-outline" id="prev-step-btn"><i class="fas fa-arrow-left"></i> Previous Step</button>
+                        <button class="btn-primary" id="next-step-btn">Next Step <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    
+                    <div class="ingredients-checklist">
+                        <h4>Ingredients for this step</h4>
+                        <ul>
+                            <li><input type="checkbox" id="ing1"> <label for="ing1">2 tbsp oil</label></li>
+                            <li><input type="checkbox" id="ing2"> <label for="ing2">2 medium onions, finely chopped</label></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="cooking-footer">
+                    <button class="btn-outline" id="voice-control-btn"><i class="fas fa-microphone"></i> Voice Control</button>
+                    <button class="btn-outline" id="save-progress-btn"><i class="far fa-save"></i> Save Progress</button>
+                    <button class="btn-outline" id="view-full-recipe-btn"><i class="fas fa-book-open"></i> View Full Recipe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="auth/auth.js"></script>
+    <script src="recipes/recipes.js"></script>
+    <script src="meal-plan/meal-plan.js"></script>
+    <script src="shopping/shopping.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
