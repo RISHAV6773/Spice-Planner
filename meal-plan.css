@@ -1,0 +1,260 @@
+/* Meal Planning Calendar Styles */
+.meal-plan-container {
+    display: flex;
+    gap: 25px;
+}
+
+.meal-plan-sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    background-color: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    height: fit-content;
+}
+
+.recipe-filters h4 {
+    margin-bottom: 15px;
+    color: var(--dark-color);
+    font-size: 16px;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--border-radius);
+    font-family: var(--font-primary);
+    background-color: white;
+}
+
+.filter-group select[multiple] {
+    height: 120px;
+}
+
+.filtered-recipes h4 {
+    margin: 25px 0 15px;
+    color: var(--dark-color);
+    font-size: 16px;
+}
+
+.recipe-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.recipe-list-item {
+    padding: 12px;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--border-radius);
+    cursor: grab;
+    transition: var(--transition);
+    background-color: white;
+}
+
+.recipe-list-item:hover {
+    background-color: rgba(78, 205, 196, 0.1);
+    border-color: var(--secondary-color);
+}
+
+.recipe-list-item h4 {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: var(--dark-color);
+}
+
+.recipe-meta {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--gray-medium);
+}
+
+.meal-plan-calendar {
+    flex: 1;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.calendar-header h3 {
+    font-size: 18px;
+    color: var(--dark-color);
+}
+
+.nav-arrow {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--gray-medium);
+    padding: 5px 10px;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.nav-arrow:hover {
+    background-color: #f0f0f0;
+    color: var(--dark-color);
+}
+
+.week-view {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.week-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: var(--dark-color);
+    color: white;
+}
+
+.day-header {
+    padding: 12px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: minmax(120px, auto);
+    border: 1px solid var(--gray-light);
+    border-top: none;
+}
+
+.day-column {
+    border-right: 1px solid var(--gray-light);
+    min-height: 400px;
+}
+
+.day-column:last-child {
+    border-right: none;
+}
+
+.meal-slot {
+    border-bottom: 1px solid var(--gray-light);
+    min-height: 120px;
+}
+
+.meal-slot:last-child {
+    border-bottom: none;
+}
+
+.meal-header {
+    padding: 8px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid var(--gray-light);
+    color: var(--gray-dark);
+}
+
+.meal-content {
+    padding: 8px;
+    min-height: calc(120px - 28px);
+}
+
+.droppable {
+    background-color: rgba(78, 205, 196, 0.05);
+    min-height: 100%;
+}
+
+.planned-meal {
+    background-color: white;
+    border: 1px solid var(--gray-light);
+    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 5px;
+    cursor: move;
+}
+
+.planned-meal h4 {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: var(--dark-color);
+}
+
+.meal-meta {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--gray-medium);
+}
+
+.drag-over {
+    background-color: rgba(255, 107, 107, 0.1);
+    border: 2px dashed var(--primary-color);
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .meal-plan-container {
+        flex-direction: column;
+    }
+    
+    .meal-plan-sidebar {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .week-header {
+        display: none;
+    }
+    
+    .week-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .day-column {
+        border-right: none;
+        border-bottom: 1px solid var(--gray-light);
+        min-height: auto;
+    }
+    
+    .day-column:last-child {
+        border-bottom: none;
+    }
+    
+    .meal-slot {
+        min-height: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .calendar-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .recipe-list {
+        max-height: 200px;
+    }
+}
